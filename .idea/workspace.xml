@@ -126,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1552786647686</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="&quot;last test. Lets get this bread!&quot;">
+      <created>1552786733930</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1552786733930</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -178,7 +185,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="&quot;start to linked list&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;start to linked list&quot;" />
+    <MESSAGE value="&quot;last test. Lets get this bread!&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;last test. Lets get this bread!&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Expressions/LinkedList.java" />

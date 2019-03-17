@@ -5,6 +5,7 @@ public class LinkedList {
     public LinkedList(String data)
     {
         System.out.println("hello friend");
+        System.out.println("new shit");
     }
 
 }

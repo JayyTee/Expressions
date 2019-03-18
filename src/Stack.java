@@ -9,15 +9,30 @@ public class Stack extends LinkedList
     // Push onto stack if full() == false;
     void push(String data)
     {
-        addFront(data);
+        try
+        {
+            addFront(data);
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 
     // Remove top item and return it
     public String pop()
     {
+        String s = "";
 
-        String s = removeFirst();
+        try
+        {
+            s = removeFirst();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
 
-            return s;
+        return s;
     }
 }

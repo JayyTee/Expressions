@@ -32,12 +32,8 @@ public class Queue extends LinkedList
         {
             System.out.println(e.getMessage());
         }
+
         return s;
     }
 
-    // Return size
-    private int size()
-    {
-        return this.size;
-    }
 }

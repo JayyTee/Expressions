@@ -4,6 +4,5 @@ public class Main {
         Stack stack = new Stack(10);
         stack.push("h");
         String newFirst = stack.pop();
-
     }
 }

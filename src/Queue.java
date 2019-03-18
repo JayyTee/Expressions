@@ -1,34 +1,36 @@
-public class Queue extends LinkedList{
-
-    int maxSize = 0;
-    int size = 0;
-
+public class Queue extends LinkedList
+{
     Queue(int maxSize)
     {
+        super(maxSize);
         this.maxSize = maxSize;
     }
 
-    // Add item to bottom of queue
-    public void enqueue()
+    // Add item to rear of queue
+    public void enqueue(String data)
     {
-
+        addRear(data);
     }
 
-    //remove item from top of queue
+    //remove and return item at front of queue
     public String Dequeue()
     {
+        String s = "";
 
+        try
+        {
+            s = removeFirst();
+        }
+        catch(Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+        return s;
     }
 
     // Return size
     private int size()
     {
         return this.size;
-    }
-
-    //return true if queue is full
-    public boolean full()
-    {
-
     }
 }

@@ -1,33 +1,23 @@
 public class Stack extends LinkedList
 {
-    int maxSize = 0;
-    int size = 0;
-
     public Stack(int maxSize)
     {
+        super(maxSize);
         this.maxSize = maxSize;
     }
 
-    // Push onto stack if it is not full, else print message
+    // Push onto stack if full() == false;
     void push(String data)
     {
-        if(size < maxSize)
-        {
-            addFront(data);
-            size ++;
-        }
-
-        else
-        {
-            System.out.println("stack is full");
-        }
+        addFront(data);
     }
 
-    // Remove top item and return popped item
-    String pop()
+    // Remove top item and return it
+    public String pop()
     {
-        size --;
+
         String s = removeFirst();
-        return s;
+
+            return s;
     }
 }

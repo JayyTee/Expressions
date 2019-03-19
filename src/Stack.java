@@ -1,3 +1,8 @@
+/*
+*
+*
+*
+*/
 public class Stack extends LinkedList
 {
     public Stack(int maxSize)

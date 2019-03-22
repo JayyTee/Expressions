@@ -1,11 +1,5 @@
 public class Queue extends LinkedList
 {
-    Queue(int maxSize)
-    {
-        super(maxSize);
-        this.maxSize = maxSize;
-    }
-
     // Add item to rear of queue
     public void enqueue(String data)
     {

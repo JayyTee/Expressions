@@ -1,17 +1,12 @@
 /*
-*
-*
+*Stack based on the packaged linked list
+*Impelements standard Stack
 *
 */
 public class Stack extends LinkedList
 {
-    public Stack(int maxSize)
-    {
-        super(maxSize);
-        this.maxSize = maxSize;
-    }
 
-    // Push onto stack if full() == false;
+    // Push onto stack if !full();
     void push(String data)
     {
         try

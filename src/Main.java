@@ -9,12 +9,13 @@ public class Main {
     String SUBTRACTION = "-";
     String MULTIPLICATION = "*";
     String DIVISION = "/";
-    public static void main(String[] args) {   //variables
-        String expression = "( 5 * 4 ) / 10 + 2 #";
+    public static void main(String[] args)
+    {   //variables
+        String expression = "4 * ( 5 - ( 7 + 2 ) ) #";
         String[] token = expression.split(" ");
         String temp;
         String post = "";
-
+        int count = 0; // number of sets of parentheses
         int current; // Current token's priority
         int previous = 0; // Previous token's priority
         boolean parenthesis = false;// Stop enqueue if left parenthesis is found
@@ -24,64 +25,80 @@ public class Main {
         Queue infix = new Queue();
         Queue postfix = new Queue();
 
-        for (int i = 0; i < token.length; i++) // Push infix expression to infix queue
+        for(int i = 0; i < token.length; i++) // Push infix expression to infix queue
         {
             infix.enqueue(token[i]);
         }
 
         operators.push("#"); // Initialize operator stack with #
 
-        while (!infix.empty()) {
+        while(!infix.empty())
+        {
             temp = infix.dequeue();
             current = priority(temp);
 
-            if (temp.equals("(")) // If current item is left parenthesis, pause pop() from operators
+            if(temp.equals("(")) // If current item is left parenthesis, pause pop() from operators
             {
                 operators.push(temp);
                 parenthesis = true;
+                count++;
             }
-            else if (temp.equals(")"))// When right parenthesis is found, pop all up to left parenthesis
+            else if(temp.equals(")"))// When right parenthesis is found, pop all up to left parenthesis
             {
+                count--;
                 temp = operators.pop();
-                while (!temp.equals("(")) {
+
+                while(!temp.equals("("))
+                {
                     postfix.enqueue(temp);
                     temp = operators.pop();
                 }
+                if (count == 0)
+                    parenthesis = false;
             }
-           else if (current == 0) // if current item is '#' pop() all operators
+            else if(current == 0) // if current item is '#' pop() all operators
             {
                 temp = operators.pop();
-                while (!temp.equals("#")) {
+                while(!temp.equals("#"))
+                {
                     postfix.enqueue(temp);
                     temp = operators.pop();
 
                 }
-            } else if (current < 0) //if current item is an operand, enqueue to postfix
+            }
+            else if(current < 0) //if current item is an operand, enqueue to postfix
             {
                 postfix.enqueue(temp);
-            } else if (current >= priority(operators.ontop())) //if priority of current item is greater then item atop operator stack, push
+            }
+            else if(current >= priority(operators.ontop())) //if priority of current item is greater then item atop operator stack, push
             {
                 operators.push(temp);
-            } else if (current < priority(operators.ontop())) {
-                if (parenthesis) {
+            }
+            else if(current < priority(operators.ontop()))
+            {
+                if(parenthesis)
+                {
                     operators.push(temp);
-                } else {
-                    while (current < priority(operators.ontop()))
+                }
+                else
+                {
+                    while(current < priority(operators.ontop()))
                         postfix.enqueue(operators.pop());
 
                     operators.push(temp);
                 }
-            }
-            }
-            while (!postfix.empty()) {
-                post += postfix.dequeue();
-                post += " ";
-            }
 
-
-            evaluate(post);
-
+            }
         }
+
+        while(!postfix.empty())
+        {
+            post += postfix.dequeue();
+            post += " ";
+        }
+
+        evaluate(post);
+    }
 
 
     // Return the priority of input token
@@ -119,70 +136,66 @@ public class Main {
     private static int evaluate(String post)
     {
         String[] postfixArray = post.split(" ");
-
+        System.out.println(post);
+        Stack calculation = new Stack();
         String operator = "";
         int operand1 = 0;
         int operand2 = 0;
 
-
-
-        for(int i = 0; i < postfixArray.length-1; i++)
-        {
-
+        for(int i = 0; i < postfixArray.length; i++) {
             if (postfixArray[i].matches("\\d+"))
             {
-                if(operand1 == 0)
-                {
-                    operand1 = Integer.parseInt(postfixArray[i]);
-                    System.out.println("Operand 1: " +operand1);
-                }
-                else
-                {
-                    operand2 = Integer.parseInt(postfixArray[i]);
-                    System.out.println("Operand 2: " +operand2);
-                }
-
+                calculation.push(postfixArray[i]);
             }
             else
             {
                 operator = postfixArray[i];
-                System.out.println(operator);
-            }
+                operand1 = Integer.parseInt(calculation.pop());
+                operand2 = Integer.parseInt(calculation.pop());
 
+            }
 
             switch(operator)
             {
                 case "+":
                 {
-                    operand1 = operand1 + operand2;
-                    operand2 = 0;
+                    calculation.push(Integer.toString(operand2 + operand1));
+                    operator = "";
                 }
                 break;
 
                 case "-":
                 {
-                    operand1 = operand1 - operand2;
-                    operand2 = 0;
+                    calculation.push(Integer.toString(operand2 - operand1));
+                    operator = "";
                 }
                 break;
 
                 case "/":
                 {
-                    operand1 = operand1 / operand2;
-                    operand2 = 0;
+                    calculation.push(Integer.toString(operand2 / operand1));
+                    operator = "";
                 }
                 break;
 
                 case "*":
                 {
-                    operand1 = operand1 * operand2;
-                    operand2 = 0;
+                    calculation.push(Integer.toString(operand2 * operand1));
+                    operator = "";
                 }
                 break;
+                default:
             }
+
         }
 
-        System.out.println("the answer is: " + operand2);
+
+
+
+
+
+
+        System.out.println("the answer is: " + calculation.ontop());
         return 1;
     }
 }

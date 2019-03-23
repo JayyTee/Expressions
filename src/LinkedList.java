@@ -2,6 +2,7 @@
 * This is a linked list class with Node inner class to be used-
 * in creation of stacks and queues.
 * Custom exceptions for full and empty linked list are also included
+*
 * By: Jaiquan Rainey
 */
 

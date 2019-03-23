@@ -6,7 +6,7 @@
 public class Stack extends LinkedList
 {
 
-    // Push onto stack if !full();
+    // Push onto stack if stack !full();
     void push(String data)
     {
         try

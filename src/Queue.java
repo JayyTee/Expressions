@@ -14,7 +14,7 @@ public class Queue extends LinkedList
     }
 
     //remove and return item at front of queue
-    public String Dequeue()
+    public String dequeue()
     {
         String s = "";
 

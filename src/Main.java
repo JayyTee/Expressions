@@ -9,12 +9,11 @@ public class Main {
     String SUBTRACTION = "-";
     String MULTIPLICATION = "*";
     String DIVISION = "/";
-    public static void main(String[] args)
-    {   //variables
+    public static void main(String[] args) {   //variables
         String expression = "( 5 * 4 )/ 10 + 2 #";
         String[] token = expression.split(" ");
         String temp;
-        String  post = "";
+        String post = "";
 
         int current; // Current token's priority
         int previous = 0; // Previous token's priority
@@ -25,74 +24,65 @@ public class Main {
         Queue infix = new Queue();
         Queue postfix = new Queue();
 
-        for(int i = 0; i < token.length; i++) // Push infix expression to infix queue
+        for (int i = 0; i < token.length; i++) // Push infix expression to infix queue
         {
             infix.enqueue(token[i]);
         }
 
         operators.push("#"); // Initialize operator stack with #
 
-        while(!infix.empty())
-        {
-           temp = infix.dequeue();
-           current = priority(temp);
+        while (!infix.empty()) {
+            temp = infix.dequeue();
+            current = priority(temp);
 
-           if(temp.equals("(")) // If current item is left parenthesis, pause pop() from operators
-           {
-               operators.push(temp);
-               parenthesis = true;
-           }
-           else if(temp.equals(")"))// When right parenthesis is found, pop all up to left parenthesis
-           {
-               temp = operators.pop();
-               while(!temp.equals("("))
-               {
-                   postfix.enqueue(temp);
-                   temp = operators.pop();
-               }
-           else if(current == 0) // if current item is '#' pop() all operators
-           {
-               temp = operators.pop();
-               while(!temp.equals("#"))
-               {
-                   postfix.enqueue(temp);
-                   temp = operators.pop();
+            if (temp.equals("(")) // If current item is left parenthesis, pause pop() from operators
+            {
+                operators.push(temp);
+                parenthesis = true;
+            }
+            else if (temp.equals(")"))// When right parenthesis is found, pop all up to left parenthesis
+            {
+                temp = operators.pop();
+                while (!temp.equals("(")) {
+                    postfix.enqueue(temp);
+                    temp = operators.pop();
+                }
+            }
+           else if (current == 0) // if current item is '#' pop() all operators
+            {
+                temp = operators.pop();
+                while (!temp.equals("#")) {
+                    postfix.enqueue(temp);
+                    temp = operators.pop();
 
-               }
-           }
-           else if(current < 0) //if current item is an operand, enqueue to postfix
-           {
-               postfix.enqueue(temp);
-           }
-           else if(current >= priority(operators.ontop())) //if priority of current item is greater then item atop operator stack, push
-           {
-               operators.push(temp);
-           }
-           else if(current < priority(operators.ontop()))
-           {
-               if(parenthesis)
-               {
-                   operators.push(temp);
-               }
-               else
-               {
-                   while(current < priority(operators.ontop()))
-                       postfix.enqueue(operators.pop());
+                }
+            } else if (current < 0) //if current item is an operand, enqueue to postfix
+            {
+                postfix.enqueue(temp);
+            } else if (current >= priority(operators.ontop())) //if priority of current item is greater then item atop operator stack, push
+            {
+                operators.push(temp);
+            } else if (current < priority(operators.ontop())) {
+                if (parenthesis) {
+                    operators.push(temp);
+                } else {
+                    while (current < priority(operators.ontop()))
+                        postfix.enqueue(operators.pop());
 
-                   operators.push(temp);
-               }
-           }
-        }
-        while(!postfix.empty())
-        {
-            post += postfix.dequeue();
-            post += " ";
+                    operators.push(temp);
+                }
+            }
+            }
+            while (!postfix.empty()) {
+                post += postfix.dequeue();
+                post += " ";
+            }
+
+
+            evaluate(post);
+
         }
 
-
-        evaluate(post);
-
-    }
 
     // Return the priority of input token
     private static int priority(String token)
@@ -173,11 +163,10 @@ public class Main {
                     operand1 = operand1 * operand2;
                     operand2 = 0;
                 }
-
             }
         }
 
-
+        System.out.println("the answer is: " + operand1);
         return 1;
     }
 }

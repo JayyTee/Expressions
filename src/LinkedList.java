@@ -104,7 +104,7 @@ public class LinkedList
     }
 
     // Return size
-    private int size()
+    public int size()
     {
         return this.size;
     }

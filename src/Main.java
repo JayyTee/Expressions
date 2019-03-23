@@ -6,10 +6,16 @@
 * */
 public class Main {
     public static void main(String[] args)
-    {
+    {   //variables
         String expression = "A * B / C + D #";
         String[] token = expression.split(" ");
         String temp = "";
+
+        int current; // Current token's priority
+        int previous = 0; // Previous token's priority
+        boolean popStop = false;// Stop enqueue if left parenthesis is found
+
+        //ADTs
         Stack operators = new Stack();
         Queue infix = new Queue();
         Queue postfix = new Queue();
@@ -24,15 +30,75 @@ public class Main {
         while(!infix.empty())
         {
             temp = infix.dequeue();
+            current = priority(temp);
+
+            if (current < 0) // add to postfix if temp is an operand
+            {
+                postfix.enqueue(temp);
+            }
+            else if(current == 3) // if token is left parenthesis, pause enqueues and add to stack
+            {
+                operators.push(temp);
+                popStop = true;
+            }
+            else if(popStop && current > 0) // If there is a left parenthesis, only push() onto operator stack
+            {
+                operators.push(temp);
+                previous = current;
+            }
+            else if(!popStop && current > 0) // if previous item in op stack is < current held item, move previous to postfix and push current
+            {
+                if(current > previous && operators.size() > 1)
+                {
+                    temp = operators.pop();
+                    postfix.enqueue(temp);
+                    operators.push(temp);
+                    previous = current;
+                }
+                else
+                {
+                    operators.push(temp);
+                    previous = current;
+                }
+
+            }
+            else if(!temp.equals(")")) //once right parenthesis is reached, pop all operators until left one is found
+            {
+                temp = operators.pop();
+
+                while(!temp.equals("("))
+                {
+                    postfix.enqueue(temp);
+                    temp = operators.pop();
+                }
+                popStop = false;
+
+            }
+            else if(temp.equals("#")) // If end character is found, pop all on operator stack
+            {
+                temp = operators.pop();
+
+                while(temp != "#")
+                {
+                   while(!operators.empty())
+                        postfix.enqueue(temp);
+                }
+
+            }
+
         }
+        while(!postfix.empty())
+            System.out.print(postfix.dequeue() + " ");
+
     }
 
-    private static int Priority(String token)
+    // Return the priority of input token
+    private static int priority(String token)
     {
-        String op = "";
-        int value;
 
-        switch(op)
+        int value = 0;
+
+        switch(token)
         {
             case "(":
                 value = 3;
@@ -47,7 +113,7 @@ public class Main {
             case"-":
                 value = 1;
             default:
-                value = 0;
+                value = -1;
         }
         return value;
     }

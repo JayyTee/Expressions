@@ -35,4 +35,11 @@ public class Stack extends LinkedList
 
         return s;
     }
+
+    public String ontop()
+    {
+        String temp = pop();
+        push(temp);
+        return temp;
+    }
 }

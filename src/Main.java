@@ -7,13 +7,13 @@
 public class Main {
     public static void main(String[] args)
     {   //variables
-        String expression = "( A * B ) / C + D #";
+        String expression = "A * B + ( C - D / E ) #";
         String[] token = expression.split(" ");
         String temp,temp2;
 
         int current; // Current token's priority
         int previous = 0; // Previous token's priority
-        boolean popStop = false;// Stop enqueue if left parenthesis is found
+        boolean parenthesis = false;// Stop enqueue if left parenthesis is found
 
         //ADTs
         Stack operators = new Stack();
@@ -29,60 +29,57 @@ public class Main {
 
         while(!infix.empty())
         {
-            temp = infix.dequeue();
-            current = priority(temp);
+           temp = infix.dequeue();
+           current = priority(temp);
 
-            if (current < 0) // add to postfix if temp is an operand
-            {
-                postfix.enqueue(temp);
-            }
-            else if(current == 3) // if token is left parenthesis, pause enqueues and add to stack
-            {
-                operators.push(temp);
-                popStop = true;
-            }
-            else if(popStop && current > 0) // If there is a left parenthesis, only push() onto operator stack
-            {
-                operators.push(temp);
-                previous = current;
-            }
-            else if(!popStop && current > 0) // if previous item in op stack is < current held item, move previous to postfix and push current
-            {
-                if(operators.size() > 1 && current <= previous)
-                {
-                    temp2 = operators.pop();
-                    postfix.enqueue(temp2);
-                    operators.push(temp);
-                    previous = current;
-                }
-                else
-                {
-                    operators.push(temp);
-                    previous = current;
-                }
+           if(temp.equals("(")) // If current item is left parenthesis, pause pop() from operators
+           {
+               operators.push(temp);
+               parenthesis = true;
+           }
+           else if(temp.equals(")"))// When right parenthesis is found, pop all up to left parenthesis
+           {
+               temp = operators.pop();
+               while(!temp.equals("("))
+               {
+                   postfix.enqueue(temp);
+                   temp = operators.pop();
+               }
+               parenthesis = false;
+           }
+           else if(current == 0) // if current item is '#' pop() all operators
+           {
+               temp = operators.pop();
+               while(!temp.equals("#"))
+               {
+                   postfix.enqueue(temp);
+                   temp = operators.pop();
 
-            }
-            else if(temp.equals(")")) //once right parenthesis is reached, pop all operators until left one is found
-            {
-                temp = operators.pop();
+               }
+           }
+           else if(current < 0) //if current item is an operand, enqueue to postfix
+           {
+               postfix.enqueue(temp);
+           }
+           else if(current >= priority(operators.ontop())) //if priority of current item is greater then item atop operator stack, push
+           {
+               operators.push(temp);
+           }
+           else if(current < priority(operators.ontop()))
+           {
+               if(parenthesis)
+               {
+                   operators.push(temp);
+               }
+               else
+               {
+                   while(current < priority(operators.ontop()))
+                       postfix.enqueue(operators.pop());
 
-                while(!temp.equals("("))
-                {
-                    postfix.enqueue(temp);
-                    temp = operators.pop();
-                }
-                popStop = false;
+                   operators.push(temp);
+               }
 
-            }
-            else if(temp.equals("#")) // If end character is found, pop all on operator stack
-            {
-
-                while(!operators.empty())
-                {
-                    temp = operators.pop();
-                    postfix.enqueue(temp);
-                }
-            }
+           }
         }
         while(!postfix.empty())
             System.out.print(postfix.dequeue() + " ");

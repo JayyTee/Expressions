@@ -5,11 +5,16 @@
 * Jaiquan Rainey
 * */
 public class Main {
+    String ADDITION = "+";
+    String SUBTRACTION = "-";
+    String MULTIPLICATION = "*";
+    String DIVISION = "/";
     public static void main(String[] args)
     {   //variables
-        String expression = "A * B + ( C - D / E ) #";
+        String expression = "( 5 * 4 )/ 10 + 2 #";
         String[] token = expression.split(" ");
-        String temp,temp2;
+        String temp;
+        String  post = "";
 
         int current; // Current token's priority
         int previous = 0; // Previous token's priority
@@ -45,8 +50,6 @@ public class Main {
                    postfix.enqueue(temp);
                    temp = operators.pop();
                }
-               parenthesis = false;
-           }
            else if(current == 0) // if current item is '#' pop() all operators
            {
                temp = operators.pop();
@@ -78,11 +81,16 @@ public class Main {
 
                    operators.push(temp);
                }
-
            }
         }
         while(!postfix.empty())
-            System.out.print(postfix.dequeue() + " ");
+        {
+            post += postfix.dequeue();
+            post += " ";
+        }
+
+
+        evaluate(post);
 
     }
 
@@ -116,5 +124,60 @@ public class Main {
                 value = -1;
         }
         return value;
+    }
+
+    private static int evaluate(String post)
+    {
+        String operator = "";
+        int operand1 = 0;
+        int operand2 = 0;
+        String[] postfixArray = post.split(" ");
+
+        for(int i = 0; i < postfixArray.length-1; i++)
+        {
+            if (postfixArray[i].matches("\\d+"))
+            {
+                if(operand1 == 0)
+                {
+                    operand1 = Integer.parseInt(postfixArray[i]);
+                    System.out.println(operand1);
+                }
+                else
+                {
+                    operand2 = Integer.parseInt(postfixArray[i]);
+                    System.out.println(operand2);
+                }
+                System.out.println(operand1);
+            }
+
+            switch(operator)
+            {
+                case "+":
+                {
+                    operand1 = operand1 + operand2;
+                    operand2 = 0;
+                }
+                case "-":
+                {
+                    operand1 = operand1 - operand2;
+                    operand2 = 0;
+                }
+
+                case "/":
+                {
+                    operand1 = operand1 / operand2;
+                    operand2 = 0;
+                }
+                case "*":
+                {
+                    operand1 = operand1 * operand2;
+                    operand2 = 0;
+                }
+
+            }
+        }
+
+
+        return 1;
     }
 }

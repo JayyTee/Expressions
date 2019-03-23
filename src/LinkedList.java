@@ -33,8 +33,6 @@ public class LinkedList
             first = newFront;
             size++;
         }
-
-        size ++;
     }
 
     // Add new item to end of list

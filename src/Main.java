@@ -7,9 +7,9 @@
 public class Main {
     public static void main(String[] args)
     {   //variables
-        String expression = "A * B / C + D #";
+        String expression = "( A * B ) / C + D #";
         String[] token = expression.split(" ");
-        String temp = "";
+        String temp,temp2;
 
         int current; // Current token's priority
         int previous = 0; // Previous token's priority
@@ -48,10 +48,10 @@ public class Main {
             }
             else if(!popStop && current > 0) // if previous item in op stack is < current held item, move previous to postfix and push current
             {
-                if(current > previous && operators.size() > 1)
+                if(operators.size() > 1 && current <= previous)
                 {
-                    temp = operators.pop();
-                    postfix.enqueue(temp);
+                    temp2 = operators.pop();
+                    postfix.enqueue(temp2);
                     operators.push(temp);
                     previous = current;
                 }
@@ -62,7 +62,7 @@ public class Main {
                 }
 
             }
-            else if(!temp.equals(")")) //once right parenthesis is reached, pop all operators until left one is found
+            else if(temp.equals(")")) //once right parenthesis is reached, pop all operators until left one is found
             {
                 temp = operators.pop();
 
@@ -76,16 +76,13 @@ public class Main {
             }
             else if(temp.equals("#")) // If end character is found, pop all on operator stack
             {
-                temp = operators.pop();
 
-                while(temp != "#")
+                while(!operators.empty())
                 {
-                   while(!operators.empty())
-                        postfix.enqueue(temp);
+                    temp = operators.pop();
+                    postfix.enqueue(temp);
                 }
-
             }
-
         }
         while(!postfix.empty())
             System.out.print(postfix.dequeue() + " ");
@@ -108,10 +105,16 @@ public class Main {
                 break;
             case "/":
                 value = 2;
+                break;
             case "+":
                 value = 1;
+                break;
             case"-":
                 value = 1;
+                break;
+            case"#":
+                value = 0;
+                break;
             default:
                 value = -1;
         }

@@ -10,7 +10,7 @@ public class Main {
     String MULTIPLICATION = "*";
     String DIVISION = "/";
     public static void main(String[] args) {   //variables
-        String expression = "( 5 * 4 )/ 10 + 2 #";
+        String expression = "( 5 * 4 ) / 10 + 2 #";
         String[] token = expression.split(" ");
         String temp;
         String post = "";
@@ -118,27 +118,37 @@ public class Main {
 
     private static int evaluate(String post)
     {
+        String[] postfixArray = post.split(" ");
+
         String operator = "";
         int operand1 = 0;
         int operand2 = 0;
-        String[] postfixArray = post.split(" ");
+
+
 
         for(int i = 0; i < postfixArray.length-1; i++)
         {
+
             if (postfixArray[i].matches("\\d+"))
             {
                 if(operand1 == 0)
                 {
                     operand1 = Integer.parseInt(postfixArray[i]);
-                    System.out.println(operand1);
+                    System.out.println("Operand 1: " +operand1);
                 }
                 else
                 {
                     operand2 = Integer.parseInt(postfixArray[i]);
-                    System.out.println(operand2);
+                    System.out.println("Operand 2: " +operand2);
                 }
-                System.out.println(operand1);
+
             }
+            else
+            {
+                operator = postfixArray[i];
+                System.out.println(operator);
+            }
+
 
             switch(operator)
             {
@@ -147,26 +157,32 @@ public class Main {
                     operand1 = operand1 + operand2;
                     operand2 = 0;
                 }
+                break;
+
                 case "-":
                 {
                     operand1 = operand1 - operand2;
                     operand2 = 0;
                 }
+                break;
 
                 case "/":
                 {
                     operand1 = operand1 / operand2;
                     operand2 = 0;
                 }
+                break;
+
                 case "*":
                 {
                     operand1 = operand1 * operand2;
                     operand2 = 0;
                 }
+                break;
             }
         }
 
-        System.out.println("the answer is: " + operand1);
+        System.out.println("the answer is: " + operand2);
         return 1;
     }
 }

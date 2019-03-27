@@ -5,22 +5,63 @@
 * Jaiquan Rainey
 * */
 public class Main {
-    String ADDITION = "+";
-    String SUBTRACTION = "-";
-    String MULTIPLICATION = "*";
-    String DIVISION = "/";
     public static void main(String[] args)
     {   //variables
-        String expression = "4 * ( 5 - ( 7 + 2 ) ) #";
+        String expression = "4 * ( 5 - ( 7 + 2 ) ) #"; //expression, with each number or character separated by a space
+        expression = expression.trim();
+
+        String postFixForm = convert(expression);
+        String solution = evaluate(postFixForm);
+
+        System.out.println("postfix form: " + postFixForm);
+        System.out.print("evaluates to " + solution);
+
+    }
+
+    // Return the priority of input character
+    private static int priority(String token)
+    {
+
+        int value = 0;
+
+        switch(token)
+        {
+            case "(":
+                value = 3;
+                break;
+            case "*":
+                value = 2;
+                break;
+            case "/":
+                value = 2;
+                break;
+            case "+":
+                value = 1;
+                break;
+            case"-":
+                value = 1;
+                break;
+            case"#":
+                value = 0;
+                break;
+            default:
+                value = -1;
+        }
+        return value;
+    }
+
+    // Convert infix expression to postfix
+    private static String convert(String expression)
+    {
         String[] token = expression.split(" ");
         String temp;
-        String post = "";
+        String newExpression = "";
+
         int count = 0; // number of sets of parentheses
         int current; // Current token's priority
-        int previous = 0; // Previous token's priority
-        boolean parenthesis = false;// Stop enqueue if left parenthesis is found
+        boolean parenthesis = false; // block pop() from operator stack if left parenthesis is found
 
-        //ADTs
+        //Custom ADTs of String type
         Stack operators = new Stack();
         Queue infix = new Queue();
         Queue postfix = new Queue();
@@ -53,7 +94,7 @@ public class Main {
                     postfix.enqueue(temp);
                     temp = operators.pop();
                 }
-                if (count == 0)
+                if (count == 0)// once all parentheses are popped, resume normal pop()'ing from operator stack
                     parenthesis = false;
             }
             else if(current == 0) // if current item is '#' pop() all operators
@@ -66,15 +107,15 @@ public class Main {
 
                 }
             }
-            else if(current < 0) //if current item is an operand, enqueue to postfix
+            else if(current < 0) // If current item is an operand, enqueue to postfix
             {
                 postfix.enqueue(temp);
             }
-            else if(current >= priority(operators.ontop())) //if priority of current item is greater then item atop operator stack, push
+            else if(current >= priority(operators.ontop())) // If priority of current item is greater then item atop operator stack, push()
             {
                 operators.push(temp);
             }
-            else if(current < priority(operators.ontop()))
+            else if(current < priority(operators.ontop())) // If priority of current item is less than item atop operator stack pop() until it isn't, then push()
             {
                 if(parenthesis)
                 {
@@ -93,50 +134,18 @@ public class Main {
 
         while(!postfix.empty())
         {
-            post += postfix.dequeue();
-            post += " ";
+            newExpression += postfix.dequeue();
+            newExpression += " ";
         }
 
-        evaluate(post);
+        return newExpression;
     }
 
-
-    // Return the priority of input token
-    private static int priority(String token)
-    {
-
-        int value = 0;
-
-        switch(token)
-        {
-            case "(":
-                value = 3;
-                break;
-            case "*":
-                value = 2;
-                break;
-            case "/":
-                value = 2;
-                break;
-            case "+":
-                value = 1;
-                break;
-            case"-":
-                value = 1;
-                break;
-            case"#":
-                value = 0;
-                break;
-            default:
-                value = -1;
-        }
-        return value;
-    }
-
-    private static int evaluate(String post)
+    // Evaluate postfix form and return solution
+    private static String evaluate(String post)
     {
         String[] postfixArray = post.split(" ");
-        System.out.println(post);
+
         Stack calculation = new Stack();
         String operator = "";
         int operand1 = 0;
@@ -155,7 +164,7 @@ public class Main {
 
             }
 
-            switch(operator)
+            switch(operator)// Identify operator and apply to both operands
             {
                 case "+":
                 {
@@ -186,16 +195,7 @@ public class Main {
                 break;
                 default:
             }
-
         }
-
-
-
-
-
-
-
-        System.out.println("the answer is: " + calculation.ontop());
-        return 1;
+        return calculation.ontop();
     }
 }

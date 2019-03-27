@@ -1,7 +1,5 @@
 /*
-*Stack based on the packaged linked list
-*Impelements standard Stack
-*
+*Stack based on the linked list class
 */
 public class Stack extends LinkedList
 {

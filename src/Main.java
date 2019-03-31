@@ -13,6 +13,7 @@ public class Main {
         String postFixForm = convert(expression);
         String solution = evaluate(postFixForm);
 
+        System.out.println("original: " + expression);
         System.out.println("postfix form: " + postFixForm);
         System.out.print("evaluates to " + solution);
 
